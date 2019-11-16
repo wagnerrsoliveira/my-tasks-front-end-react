@@ -1,2 +1,7 @@
 export interface ILoginProps {}
-export interface ILoginState {}
+export interface ILoginState {
+  user: string;
+  password: string;
+
+  showPassword: boolean;
+}
