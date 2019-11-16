@@ -9,10 +9,16 @@ import NavigationIcon from '@material-ui/icons/Navigation';
 
 import { ILoginProps, ILoginState } from "./types";
 import AuthService from "../../services/AuthService";
+import TasksContext from "../../app/context/TasksContext";
+
+import "./Login.css";
 
 
 class Login extends PureComponent<ILoginProps, ILoginState> {
+    static contextType = TasksContext;
+
     private service: AuthService;
+
     constructor(props: ILoginProps) {
         super(props);
         this.state = {
@@ -51,14 +57,15 @@ class Login extends PureComponent<ILoginProps, ILoginState> {
         this.service.login(this.state.user, this.state.password)
             .then((result) => {
                 if (result && result.success) {
-                    localStorage.setItem("token", result.data.token)
+                    localStorage.setItem("token", result.data.token);
+                    this.context.setIsAuthenticated(true);
                 }
             })
     }
 
     render() {
         return (
-            <Paper elevation={1}>
+            <Paper elevation={1} className="container-login">
                 <Grid container direction="column" justify="center" alignItems="center">
                     <AccountCircleIcon />
                     <Typography>Login...</Typography>

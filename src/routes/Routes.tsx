@@ -7,11 +7,22 @@ import Home from "../pages/Home";
 import Tasks from "../pages/Tasks";
 
 const PrivateRoute = ({ component: Component, ...rest }: any) => (
-    <Route {...rest} render={(props) => (
-        AuthService.isAuthenticated() ?
-            <Component {...props} /> :
-            <Redirect to={{ pathname: "/login", state: { from: props.location } }} />
-    )} />
+    <Route {...rest} render={(props) => {
+        if (AuthService.isAuthenticated()) {
+            if (props.location.pathname === "/login") {
+                return <Redirect to={{ pathname: "/", state: { from: props.location } }} />;
+            } else {
+                return <Component {...props} />;
+            }
+        } else {
+            if (props.location.pathname === "/login") {
+                return <Component {...props} />;
+            } else {
+                return <Redirect to={{ pathname: "/login", state: { from: props.location } }} />;
+            }
+        }
+
+    }} />
 );
 
 const Routes = () => (
@@ -20,7 +31,7 @@ const Routes = () => (
             <PrivateRoute exact path="/" component={() => <Home />} />
             <PrivateRoute exact path="/tarefas" component={() => <Tasks />} />
 
-            <Route exact path="/login" component={() => <Login />} />
+            <PrivateRoute exact path="/login" component={() => <Login />} />
         </Switch>
     </BrowserRouter>
 );

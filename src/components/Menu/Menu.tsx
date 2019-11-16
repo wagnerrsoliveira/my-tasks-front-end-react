@@ -1,13 +1,16 @@
 import React, { PureComponent } from "react";
 
-import { Grid, AppBar, Toolbar, IconButton, Badge, Typography } from "@material-ui/core";
+import { AppBar, Toolbar, IconButton, Typography } from "@material-ui/core";
 import MenuIcon from '@material-ui/icons/Menu';
 import AccountCircle from '@material-ui/icons/AccountCircle';
+import TasksContext from "../../app/context/TasksContext";
 
 class Menu extends PureComponent {
+    static contextType = TasksContext;
 
     private handleProfileMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
         localStorage.removeItem("token");
+        this.context.setIsAuthenticated(false);
     }
 
     render() {
