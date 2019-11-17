@@ -25,7 +25,7 @@ const PrivateRoute = ({ component: Component, ...rest }: any) => (
     }} />
 );
 
-const Routes = () => (
+const Routes = (props: { reload: boolean }) => (
     <BrowserRouter>
         <Switch>
             <PrivateRoute exact path="/" component={() => <Home />} />
@@ -36,4 +36,4 @@ const Routes = () => (
     </BrowserRouter>
 );
 
-export default Routes;
+export default React.memo(Routes);

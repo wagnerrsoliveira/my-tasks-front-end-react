@@ -26,8 +26,6 @@ export default class AuthService {
         let data = result.json();
         return data;
       })
-      .catch((e: any) => {
-        console.log(e);
-      });
+      .catch((e: any) => {});
   }
 }

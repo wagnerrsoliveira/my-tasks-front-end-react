@@ -1,6 +1,23 @@
 .container-login {
-  width: 70vw;
+  width: 50vw;
+  max-width: 400px;
+  min-width: 250px;
   height: 70vh;
+  max-height: 400px;
+  min-height: 300px;
   align-self: center;
   justify-self: center;
+  padding: 30px;
+}
+.grid-button-login {
+  margin: 30px;
+}
+
+.error-message-login {
+  width: 100%;
+  margin-top: 20px;
+  padding: 5px;
+  background: #ffd5d5;
+  color: #800000;
+  border-radius: 2px;
 }

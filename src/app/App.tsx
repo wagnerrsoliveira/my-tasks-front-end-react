@@ -6,6 +6,9 @@ import TasksContext from './context/TasksContext';
 import { IAppProps, IAppState } from './types';
 
 import './App.css';
+import Loading from '../components/Loading';
+import Message from '../components/Message';
+import { EMessage } from '../components/Message/types';
 
 class App extends PureComponent<IAppProps, IAppState> {
 
@@ -14,7 +17,10 @@ class App extends PureComponent<IAppProps, IAppState> {
 
     this.state = {
       loading: false,
-      isAuthenticated: AuthService.isAuthenticated()
+      isAuthenticated: AuthService.isAuthenticated(),
+      message: "",
+      openMessage: false,
+      typeMessage: EMessage.info
     }
   }
 
@@ -26,6 +32,7 @@ class App extends PureComponent<IAppProps, IAppState> {
   }
 
   private getIsAuthenticated = () => {
+
     return this.state.isAuthenticated;
   }
 
@@ -40,6 +47,24 @@ class App extends PureComponent<IAppProps, IAppState> {
     return this.state.loading;
   }
 
+  private handleOpenMessage = (message: string, typeMessage: EMessage) => {
+    this.setState({
+      ...this.state,
+      message,
+      openMessage: true,
+      typeMessage
+    })
+  }
+
+  private handleCloseMessage = () => {
+    this.setState({
+      ...this.state,
+      message: "",
+      openMessage: false
+    })
+  }
+
+
   render() {
     return (
       <div className="App">
@@ -48,13 +73,21 @@ class App extends PureComponent<IAppProps, IAppState> {
             setIsAuthenticated: this.setIsAuthenticated,
             getIsAuthenticated: this.getIsAuthenticated,
             setLoading: this.setLoading,
-            getLoading: this.getLoading
+            getLoading: this.getLoading,
+            handleOpenMessage: this.handleOpenMessage
           }
         }>
 
           {this.state.isAuthenticated && <Menu />}
-          <Routes />
+          {this.state.loading && <Loading />}
+          <Routes reload={this.state.isAuthenticated} />
         </TasksContext.Provider>
+        <Message
+          message={this.state.message}
+          open={this.state.openMessage}
+          handleCloseMessage={this.handleCloseMessage}
+          type={this.state.typeMessage}
+        />
       </div>
     );
   }
