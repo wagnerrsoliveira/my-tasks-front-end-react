@@ -18,8 +18,7 @@ import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
 import PersonPinIcon from '@material-ui/icons/PersonPin';
-
-
+import CancelIcon from '@material-ui/icons/Cancel';
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -46,50 +45,49 @@ const useStyles = makeStyles((theme: Theme) =>
     }),
 );
 
-function getIcon(title: string, icon: JSX.Element, style: React.CSSProperties) {
-    return (
-        <Avatar aria-label="recipe" style={style}>
-            <Tooltip title={title}>
-                {icon}
-            </Tooltip>
-        </Avatar>
-    )
-}
-
-function getIconStatus(status: EStatusTask) {
-    switch (status) {
-        case EStatusTask.CREATED:
-            return getIcon("Criado", <AddCircleIcon />, { background: "#255b89" })
-
-        case EStatusTask.DOING:
-            return getIcon("Fazendo", <BuildIcon />, { background: "#fbff9d" })
-
-        case EStatusTask.DONE:
-            return getIcon("Concluído", <CheckCircleIcon />, { background: "#11bb1c" })
-        case EStatusTask.CANCEL:
-            return getIcon("Cancelado", <AddCircleIcon />, { background: "#11bb1c" })
-    }
-    return <MoreVertIcon />
-}
-
 export default function CardTask(props: ICardTaskProps) {
     const classes = useStyles();
-    const [expanded, setExpanded] = React.useState(false);
 
-    const handleExpandClick = () => {
-        setExpanded(!expanded);
-    };
 
-    return (
-        <Card className={classes.card}>
+    function getIcon(title: string, icon: JSX.Element, styleAvatar: React.CSSProperties, styleCardHeader: React.CSSProperties) {
+        return (
             <CardHeader
-                style={{ background: "#e7eef4" }}
-                avatar={getIconStatus(props.task.status)}
+                style={styleCardHeader}
+                avatar={
+                    <Avatar aria-label="recipe" style={styleAvatar}>
+                        <Tooltip title={title}>
+                            {icon}
+                        </Tooltip>
+                    </Avatar>
+                }
                 title={props.task.name}
                 subheader={
                     `Criado em : ${new Date(props.task.created_at).toLocaleDateString("pt-br")}`
                 }
             />
+        )
+    }
+
+    function getIconStatus(status: EStatusTask) {
+        switch (status) {
+            case EStatusTask.CREATED:
+                return getIcon("Criado", <AddCircleIcon />, { background: "#255b89" }, { background: "#F0F8FF" })
+
+            case EStatusTask.DOING:
+                return getIcon("Fazendo", <BuildIcon />, { background: "orange" }, { background: "#FFDEAD" })
+
+            case EStatusTask.DONE:
+                return getIcon("Concluído", <CheckCircleIcon />, { background: "#11bb1c" }, { background: "#E0FFFF" })
+            case EStatusTask.CANCEL:
+                return getIcon("Cancelado", <CancelIcon />, { background: "red" }, { background: "#EEE9D9" })
+        }
+        return <MoreVertIcon />
+    }
+
+    return (
+        <Card className={classes.card}>
+
+            {getIconStatus(props.task.status)}
             <CardContent>
                 <Typography variant="body2" color="textSecondary" component="p">
                     {props.task.description}
