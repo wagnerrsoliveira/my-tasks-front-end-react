@@ -6,7 +6,13 @@ class Tasks extends PureComponent {
 
 
     render() {
-        return <Grid>Tasks Page</Grid>
+        return (
+            <Grid
+                style={{ margin: "10px" }}
+            >
+
+
+            </Grid>)
     }
 }
 

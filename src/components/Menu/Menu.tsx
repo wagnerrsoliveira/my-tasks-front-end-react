@@ -15,7 +15,7 @@ class Menu extends PureComponent {
 
     render() {
         return (
-            <AppBar position="static">
+            <AppBar position="static" >
                 <Toolbar>
                     <IconButton
                         edge="start"
@@ -25,7 +25,7 @@ class Menu extends PureComponent {
                         <MenuIcon />
                     </IconButton>
                     <Typography variant="h6" noWrap>
-                        Material-UI
+                        My Tasks
                         </Typography>
                     <div />
                     <div >
