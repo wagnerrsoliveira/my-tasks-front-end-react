@@ -1,5 +1,5 @@
 export default class AuthService {
-  private url = "http://192.168.10.10/api";
+  private url = process.env.REACT_APP_BASEURL;
 
   public static isAuthenticated(): boolean {
     let token = localStorage.getItem("token");
@@ -20,6 +20,26 @@ export default class AuthService {
     } as RequestInit;
 
     var myRequest = new Request(`${this.url}/login`, myInit);
+
+    return fetch(myRequest)
+      .then((result: any) => {
+        let data = result.json();
+        return data;
+      })
+      .catch((e: any) => {});
+  }
+
+  public getDetail(token: string): Promise<any> {
+    var myHeaders = new Headers();
+    myHeaders.append("Authorization", token);
+    var myInit = {
+      method: "GET",
+      headers: myHeaders,
+      mode: "cors",
+      cache: "default"
+    } as RequestInit;
+
+    var myRequest = new Request(`${this.url}/details`, myInit);
 
     return fetch(myRequest)
       .then((result: any) => {

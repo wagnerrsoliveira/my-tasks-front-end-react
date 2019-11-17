@@ -1,25 +1,22 @@
-export default class AuthService {
-  private url = "http://192.168.10.10/api";
+export default class TaskService {
+  private url = process.env.REACT_APP_BASEURL;
+  private token: string;
 
-  public static isAuthenticated(): boolean {
-    let token = localStorage.getItem("token");
-    return token ? true : false;
+  constructor() {
+    this.token = `Bearer ${String(localStorage.getItem("token"))}`;
   }
 
-  public login(email: string, password: string) {
+  public getTasks(): Promise<any> {
     var myHeaders = new Headers();
-    let data = new FormData();
-    data.append("email", email);
-    data.append("password", password);
+    myHeaders.append("Authorization", this.token);
     var myInit = {
-      method: "POST",
+      method: "GET",
       headers: myHeaders,
       mode: "cors",
-      cache: "default",
-      body: data
+      cache: "default"
     } as RequestInit;
 
-    var myRequest = new Request(`${this.url}/login`, myInit);
+    var myRequest = new Request(`${this.url}/tasks`, myInit);
 
     return fetch(myRequest)
       .then((result: any) => {

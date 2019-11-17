@@ -61,7 +61,14 @@ class Login extends PureComponent<ILoginProps, ILoginState> {
             .then((result) => {
                 if (result && result.success) {
                     localStorage.setItem("token", result.data.token);
-                    this.context.setIsAuthenticated(true);
+                    this.service.getDetail(`Bearer ${result.data.token}`)
+                        .then((result) => {
+                            if (result && result.success) {
+                                localStorage.setItem("userName", result.data.name);
+                            }
+                        }).finally(() => {
+                            this.context.setIsAuthenticated(true);
+                        })
                 } else {
                     this.setState({
                         ...this.state,
