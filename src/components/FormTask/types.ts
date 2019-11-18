@@ -16,6 +16,8 @@ export interface ITaskRequest {
 
 export interface IFormTaskState {
   name: string;
+  nameError:string;
   description: string;
+  descriptionError:string;
   status: number;
 }

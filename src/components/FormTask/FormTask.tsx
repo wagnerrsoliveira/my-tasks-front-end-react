@@ -1,4 +1,4 @@
-import React, { useState, PureComponent } from 'react';
+import React, { PureComponent } from 'react';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -8,20 +8,25 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import Slide from '@material-ui/core/Slide';
 import { TransitionProps } from '@material-ui/core/transitions';
 import { IFormTaskProps, IFormTaskState, ITaskRequest } from './types';
-import { Typography, TextField, Grid, InputLabel, Select, MenuItem, FormControl } from '@material-ui/core';
+import { TextField, Grid, InputLabel, Select, MenuItem, FormControl } from '@material-ui/core';
+import TasksContext from '../../app/context/TasksContext';
+import { EMessage } from '../Message/types';
 
 const Transition = React.forwardRef<unknown, TransitionProps>(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} timeout={300} mountOnEnter unmountOnExit />;
 });
 
 export default class FormTask extends PureComponent<IFormTaskProps, IFormTaskState> {
+    static contextType = TasksContext;
 
     constructor(props: IFormTaskProps) {
         super(props)
         this.state = {
             name: (props.task ? props.task.name : ""),
             description: (props.task ? props.task.description : ""),
-            status: (props.task ? props.task.status : 0)
+            status: (props.task ? props.task.status : 0),
+            descriptionError: "",
+            nameError: ""
         }
     }
 
@@ -56,6 +61,53 @@ export default class FormTask extends PureComponent<IFormTaskProps, IFormTaskSta
         })
     }
 
+    submit = () => {
+        console.log("submit")
+        let nameError = "";
+        let descriptionError = "";
+        let isError = false;
+
+        if (this.props.isEdit) {
+            if (this.state.name.length >= 255) {
+                nameError = "O campo nome deve ter o máximo de 255 caracteres";
+                isError = true;
+            }
+            if (this.state.description.length >= 255) {
+                descriptionError = "O campo nome deve ter o máximo de 255 caracteres";
+                isError = true;
+            }
+        } else {
+            if (this.state.name.length == 0) {
+                nameError = "O campo nome é obrigatório";
+                isError = true;
+            } else {
+                if (this.state.name.length >= 255) {
+                    nameError = "O campo nome deve ter o máximo de 255 caracteres";
+                    isError = true;
+                }
+            }
+            if (this.state.description.length >= 255) {
+                descriptionError = "O campo nome deve ter o máximo de 255 caracteres";
+                isError = true;
+            }
+
+        }
+        if (!isError) {
+
+            this.props.handleOnClickSubmit(this.props.isEdit, { id: this.props.task ? this.props.task.id ? this.props.task.id : 0 : 0, name: this.state.name, description: this.state.description, status: this.state.status } as ITaskRequest)
+        } else {
+            this.context.handleOpenMessage("Um ou mais campos foram informados incorretamente, Tente novamente", EMessage.error)
+
+            this.setState({
+                ...this.state,
+                descriptionError,
+                nameError
+            })
+        }
+
+
+    }
+
     render() {
         return (
             <div>
@@ -72,7 +124,7 @@ export default class FormTask extends PureComponent<IFormTaskProps, IFormTaskSta
                         {this.props.isEdit ? "Editar Tarefa" : "Adicionar Nova Tarefa"}
 
                     </DialogTitle>
-                    <DialogContent style={{ minWidth: "300px" }}>
+                    <DialogContent style={{ minWidth: "400px", width: "500px" }}>
                         <DialogContentText id="alert-dialog-slide-description">
                             <form noValidate autoComplete="off">
                                 <Grid
@@ -81,6 +133,8 @@ export default class FormTask extends PureComponent<IFormTaskProps, IFormTaskSta
 
                                 >
                                     <TextField
+                                        error={this.state.nameError.length > 1}
+                                        helperText={this.state.nameError}
                                         id="name"
                                         label="Nome"
                                         margin="normal"
@@ -89,6 +143,8 @@ export default class FormTask extends PureComponent<IFormTaskProps, IFormTaskSta
                                     />
 
                                     <TextField
+                                        error={this.state.descriptionError.length > 1}
+                                        helperText={this.state.descriptionError}
                                         id="description"
                                         label="Descrição"
                                         margin="normal"
@@ -124,7 +180,7 @@ export default class FormTask extends PureComponent<IFormTaskProps, IFormTaskSta
                     <DialogActions>
                         <Button
                             style={{ background: "green", color: "white" }}
-                            onClick={() => this.props.handleOnClickSubmit(this.props.isEdit, { id: this.props.task ? this.props.task.id ? this.props.task.id : 0 : 0, name: this.state.name, description: this.state.description, status: this.state.status } as ITaskRequest)} >
+                            onClick={this.submit} >
                             Gravar
                   </Button>
                         <Button
