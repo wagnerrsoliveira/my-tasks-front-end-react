@@ -67,7 +67,7 @@ class App extends PureComponent<IAppProps, IAppState> {
 
   render() {
     return (
-      <div className="App">
+      <>
         <TasksContext.Provider value={
           {
             setIsAuthenticated: this.setIsAuthenticated,
@@ -88,7 +88,7 @@ class App extends PureComponent<IAppProps, IAppState> {
           handleCloseMessage={this.handleCloseMessage}
           type={this.state.typeMessage}
         />
-      </div>
+      </>
     );
   }
 }

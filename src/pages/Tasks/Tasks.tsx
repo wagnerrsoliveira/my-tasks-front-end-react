@@ -165,102 +165,102 @@ class Tasks extends PureComponent<ITasksProps, ITasksState> {
     render() {
         let tasksCreated = this.state.tasks.filter(t => t.status === 0);
         let tasksDoing = this.state.tasks.filter(t => t.status === 1);
-        let tasksCancel = this.state.tasks.filter(t => t.status === 2);
-        let tasksDone = this.state.tasks.filter(t => t.status === 3);
+        let tasksDone = this.state.tasks.filter(t => t.status === 2);
+        let tasksCancel = this.state.tasks.filter(t => t.status === 3);
 
         return (
-            <Grid
-                style={{ margin: "10px", height: "100%" }}
-
-            >
+            <>
                 <Grid
                     container
                     direction="row"
                     justify="center"
                     alignItems="stretch"
-
                 >
-                    <Paper elevation={2}
-                        style={{ padding: "20px", margin: "10px", height: "100%" }}
-                    >
-                        <Grid style={{ padding: "20px" }}>Criada</Grid>
-                        {
-                            tasksCreated.map((task, index) => {
-                                return (
-                                    <Grid key={`${task}`}>
-                                        <CardTask
-                                            task={task}
-                                            handleOnClickEditar={this.handleOnClickEditar}
-                                            handleOnClickExcluir={this.handleOnClickExcluir}
-                                        />
-                                    </Grid>
-                                )
-                            })
-                        }
+                    <Grid item md={6} lg={3} alignItems="stretch" style={{ marginTop: "10px" }}>
+                        <Paper elevation={2}
+                            style={{ padding: "20px", margin: "10px", height: "100%" }}
+                        >
+                            <Grid style={{ padding: "20px" }}>Criada</Grid>
+                            {
+                                tasksCreated.map((task) => {
+                                    return (
+                                        <Grid key={`${task}`}>
+                                            <CardTask
+                                                task={task}
+                                                handleOnClickEditar={this.handleOnClickEditar}
+                                                handleOnClickExcluir={this.handleOnClickExcluir}
+                                            />
+                                        </Grid>
+                                    )
+                                })
+                            }
 
-                    </Paper>
+                        </Paper>
+                    </Grid>
+                    <Grid item md={6} lg={3} alignItems="stretch" style={{ marginTop: "10px" }}>
+                        <Paper elevation={2}
+                            style={{ padding: "20px", margin: "10px" }}
+                        >
+                            <Grid style={{ padding: "20px" }}>Em Andamento</Grid>
+                            {
+                                tasksDoing.map((task) => {
+                                    return (
+                                        <Grid key={`${task}`}>
+                                            <CardTask
+                                                task={task}
+                                                handleOnClickEditar={this.handleOnClickEditar}
+                                                handleOnClickExcluir={this.handleOnClickExcluir}
+                                            />
+                                        </Grid>
+                                    )
+                                })
+                            }
 
-                    <Paper elevation={2}
-                        style={{ padding: "20px", margin: "10px" }}
-                    >
-                        <Grid style={{ padding: "20px" }}>Fazendo</Grid>
-                        {
-                            tasksDoing.map((task, index) => {
-                                return (
-                                    <Grid key={`${task}`}>
-                                        <CardTask
-                                            task={task}
-                                            handleOnClickEditar={this.handleOnClickEditar}
-                                            handleOnClickExcluir={this.handleOnClickExcluir}
-                                        />
-                                    </Grid>
-                                )
-                            })
-                        }
+                        </Paper>
+                    </Grid>
+                    <Grid item md={6} lg={3} alignItems="stretch" style={{ marginTop: "10px" }}>
+                        <Paper elevation={2}
+                            style={{ padding: "20px", margin: "10px" }}
+                        >
 
-                    </Paper>
+                            <Grid style={{ padding: "20px" }}>Realizada</Grid>
+                            {
+                                tasksDone.map((task) => {
+                                    return (
+                                        <Grid key={`${task}`}>
+                                            <CardTask
+                                                task={task}
+                                                handleOnClickEditar={this.handleOnClickEditar}
+                                                handleOnClickExcluir={this.handleOnClickExcluir}
+                                            />
+                                        </Grid>
+                                    )
+                                })
+                            }
 
-                    <Paper elevation={2}
-                        style={{ padding: "20px", margin: "10px" }}
-                    >
+                        </Paper>
+                    </Grid>
+                    <Grid item md={6} lg={3} alignItems="stretch" style={{ marginTop: "10px" }}>
+                        <Paper elevation={2}
+                            style={{ padding: "20px", margin: "10px" }}
+                        >
+                            <Grid style={{ padding: "20px" }}>Cancelada</Grid>
+                            {
+                                tasksCancel.map((task) => {
+                                    return (
+                                        <Grid key={`${task}`}>
+                                            <CardTask
+                                                task={task}
+                                                handleOnClickEditar={this.handleOnClickEditar}
+                                                handleOnClickExcluir={this.handleOnClickExcluir}
+                                            />
+                                        </Grid>
+                                    )
+                                })
+                            }
 
-                        <Grid style={{ padding: "20px" }}>Feito</Grid>
-                        {
-                            tasksDone.map((task, index) => {
-                                return (
-                                    <Grid key={`${task}`}>
-                                        <CardTask
-                                            task={task}
-                                            handleOnClickEditar={this.handleOnClickEditar}
-                                            handleOnClickExcluir={this.handleOnClickExcluir}
-                                        />
-                                    </Grid>
-                                )
-                            })
-                        }
-
-                    </Paper>
-
-                    <Paper elevation={2}
-                        style={{ padding: "20px", margin: "10px" }}
-                    >
-                        <Grid style={{ padding: "20px" }}>Cancelada</Grid>
-                        {
-                            tasksCancel.map((task, index) => {
-                                return (
-                                    <Grid key={`${task}`}>
-                                        <CardTask
-                                            task={task}
-                                            handleOnClickEditar={this.handleOnClickEditar}
-                                            handleOnClickExcluir={this.handleOnClickExcluir}
-                                        />
-                                    </Grid>
-                                )
-                            })
-                        }
-
-                    </Paper>
-
+                        </Paper>
+                    </Grid>
 
 
                 </Grid>
@@ -293,7 +293,7 @@ class Tasks extends PureComponent<ITasksProps, ITasksState> {
                         </Fab>
                     </Tooltip>
                 </Grid>
-            </Grid>)
+            </>)
     }
 }
 

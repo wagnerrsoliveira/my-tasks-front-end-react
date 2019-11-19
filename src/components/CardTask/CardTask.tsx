@@ -24,6 +24,7 @@ const useStyles = makeStyles((theme: Theme) =>
     createStyles({
         card: {
             maxWidth: 345,
+            marginBottom: 10
         },
         media: {
             height: 0,
@@ -71,15 +72,15 @@ export default function CardTask(props: ICardTaskProps) {
     function getIconStatus(status: EStatusTask) {
         switch (status) {
             case EStatusTask.CREATED:
-                return getIcon("Criado", <AddCircleIcon />, { background: "#255b89" }, { background: "#F0F8FF" })
+                return getIcon("Criada", <AddCircleIcon />, { background: "#255b89" }, { background: "#F0F8FF" })
 
             case EStatusTask.DOING:
-                return getIcon("Fazendo", <BuildIcon />, { background: "orange" }, { background: "#FFDEAD" })
+                return getIcon("Em andamento", <BuildIcon />, { background: "orange" }, { background: "#FFDEAD" })
 
             case EStatusTask.DONE:
-                return getIcon("Concluído", <CheckCircleIcon />, { background: "#11bb1c" }, { background: "#E0FFFF" })
+                return getIcon("Realizada", <CheckCircleIcon />, { background: "#11bb1c" }, { background: "#E0FFFF" })
             case EStatusTask.CANCEL:
-                return getIcon("Cancelado", <CancelIcon />, { background: "red" }, { background: "#EEE9D9" })
+                return getIcon("Cancelada", <CancelIcon />, { background: "red" }, { background: "#EEE9D9" })
         }
         return <MoreVertIcon />
     }

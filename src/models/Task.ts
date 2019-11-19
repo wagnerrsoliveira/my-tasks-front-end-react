@@ -12,6 +12,6 @@ export interface Task {
 export enum EStatusTask {
   CREATED,
   DOING,
-  CANCEL,
-  DONE
+  DONE,
+  CANCEL
 }

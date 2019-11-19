@@ -41,16 +41,26 @@ export default class FormTask extends PureComponent<IFormTaskProps, IFormTaskSta
     }
 
     private setName = (name: string) => {
+        let nameDone = name;
+        if (name.length > 254) {
+            nameDone = name.substr(0, 254);
+        }
         this.setState({
             ...this.state,
-            name
+            name: nameDone,
+            descriptionError: ""
         })
     }
 
     private setDescription = (description: string) => {
+        let descriptionDone = description;
+        if (description.length > 254) {
+            descriptionDone = description.substr(0, 254);
+        }
         this.setState({
             ...this.state,
-            description
+            description: descriptionDone,
+            descriptionError: ""
         })
     }
 
@@ -62,39 +72,32 @@ export default class FormTask extends PureComponent<IFormTaskProps, IFormTaskSta
     }
 
     submit = () => {
-        console.log("submit")
         let nameError = "";
         let descriptionError = "";
         let isError = false;
 
-        if (this.props.isEdit) {
+        if (this.state.name.trim().length < 1) {
+            nameError = "O campo nome é obrigatório.";
+            isError = true;
+        } else {
             if (this.state.name.length >= 255) {
                 nameError = "O campo nome deve ter o máximo de 255 caracteres";
                 isError = true;
             }
-            if (this.state.description.length >= 255) {
-                descriptionError = "O campo nome deve ter o máximo de 255 caracteres";
-                isError = true;
-            }
-        } else {
-            if (this.state.name.length == 0) {
-                nameError = "O campo nome é obrigatório";
-                isError = true;
-            } else {
-                if (this.state.name.length >= 255) {
-                    nameError = "O campo nome deve ter o máximo de 255 caracteres";
-                    isError = true;
-                }
-            }
-            if (this.state.description.length >= 255) {
-                descriptionError = "O campo nome deve ter o máximo de 255 caracteres";
-                isError = true;
-            }
-
         }
-        if (!isError) {
+        if (this.state.description.trim().length < 1) {
+            descriptionError = "O campo descrição é obrigatório.";
+            isError = true;
+        } else {
+            if (this.state.description.length >= 255) {
+                descriptionError = "O campo descrição deve ter o máximo de 255 caracteres";
+                isError = true;
+            }
+        }
 
+        if (!isError) {
             this.props.handleOnClickSubmit(this.props.isEdit, { id: this.props.task ? this.props.task.id ? this.props.task.id : 0 : 0, name: this.state.name, description: this.state.description, status: this.state.status } as ITaskRequest)
+            this.clearErrorMessages();
         } else {
             this.context.handleOpenMessage("Um ou mais campos foram informados incorretamente, Tente novamente", EMessage.error)
 
@@ -104,8 +107,14 @@ export default class FormTask extends PureComponent<IFormTaskProps, IFormTaskSta
                 nameError
             })
         }
+    }
 
-
+    private clearErrorMessages = () => {
+        this.setState({
+            ...this.state,
+            descriptionError: "",
+            nameError: ""
+        })
     }
 
     render() {
@@ -163,10 +172,10 @@ export default class FormTask extends PureComponent<IFormTaskProps, IFormTaskSta
                                                 value={this.state.status}
                                                 onChange={(e) => this.setStatus(Number(e.target.value))}
                                             >
-                                                <MenuItem value={0}>Criado</MenuItem>
-                                                <MenuItem value={1}>Fazendo</MenuItem>
-                                                <MenuItem value={2}>Feito</MenuItem>
-                                                <MenuItem value={3}>Cancelado</MenuItem>
+                                                <MenuItem value={0}>Criada</MenuItem>
+                                                <MenuItem value={1}>Em andamento</MenuItem>
+                                                <MenuItem value={2}>Realizada</MenuItem>
+                                                <MenuItem value={3}>Cancelada</MenuItem>
                                             </Select>
                                         </FormControl>
                                     }
@@ -185,7 +194,11 @@ export default class FormTask extends PureComponent<IFormTaskProps, IFormTaskSta
                   </Button>
                         <Button
                             style={{ background: "red", color: "white" }}
-                            onClick={() => this.props.handleOnClickSubmit(this.props.isEdit)} color="primary">
+                            onClick={() => {
+                                this.clearErrorMessages()
+                                this.props.handleOnClickSubmit(this.props.isEdit)
+                            }}
+                            color="primary">
                             Cancelar
                   </Button>
                     </DialogActions>
