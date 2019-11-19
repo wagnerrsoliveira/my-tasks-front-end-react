@@ -5,6 +5,7 @@ export interface IFormTaskProps {
   isEdit: boolean;
   task?: Task;
   handleOnClickSubmit: (isEdit: boolean, task?: ITaskRequest) => void;
+  width: any;
 }
 
 export interface ITaskRequest {
@@ -16,8 +17,8 @@ export interface ITaskRequest {
 
 export interface IFormTaskState {
   name: string;
-  nameError:string;
+  nameError: string;
   description: string;
-  descriptionError:string;
+  descriptionError: string;
   status: number;
 }

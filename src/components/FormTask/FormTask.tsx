@@ -8,7 +8,7 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import Slide from '@material-ui/core/Slide';
 import { TransitionProps } from '@material-ui/core/transitions';
 import { IFormTaskProps, IFormTaskState, ITaskRequest } from './types';
-import { TextField, Grid, InputLabel, Select, MenuItem, FormControl } from '@material-ui/core';
+import { TextField, Grid, InputLabel, Select, MenuItem, FormControl, withWidth } from '@material-ui/core';
 import TasksContext from '../../app/context/TasksContext';
 import { EMessage } from '../Message/types';
 
@@ -16,7 +16,8 @@ const Transition = React.forwardRef<unknown, TransitionProps>(function Transitio
     return <Slide direction="up" ref={ref} {...props} timeout={300} mountOnEnter unmountOnExit />;
 });
 
-export default class FormTask extends PureComponent<IFormTaskProps, IFormTaskState> {
+
+class FormTask extends PureComponent<IFormTaskProps, IFormTaskState> {
     static contextType = TasksContext;
 
     constructor(props: IFormTaskProps) {
@@ -118,9 +119,12 @@ export default class FormTask extends PureComponent<IFormTaskProps, IFormTaskSta
     }
 
     render() {
+        console.log(`${this.props.width}`)
         return (
             <div>
                 <Dialog
+                    fullWidth={true}
+                    fullScreen={this.props.width === "sm" || this.props.width === "xs"}
                     open={this.props.open}
                     TransitionComponent={Transition}
                     keepMounted
@@ -133,7 +137,7 @@ export default class FormTask extends PureComponent<IFormTaskProps, IFormTaskSta
                         {this.props.isEdit ? "Editar Tarefa" : "Adicionar Nova Tarefa"}
 
                     </DialogTitle>
-                    <DialogContent style={{ minWidth: "400px", width: "500px" }}>
+                    <DialogContent >
                         <DialogContentText id="alert-dialog-slide-description">
                             <form noValidate autoComplete="off">
                                 <Grid
@@ -208,3 +212,5 @@ export default class FormTask extends PureComponent<IFormTaskProps, IFormTaskSta
     }
 
 }
+
+export default withWidth()(FormTask); 
